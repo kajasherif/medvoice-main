@@ -1,10 +1,12 @@
 import React from 'react';
 import Routes from './Routes';
-
+import { ThemeProvider } from './context/ThemeContext';
 
 const App: React.FC = () => {
   return (
+    <ThemeProvider>
       <Routes />
+    </ThemeProvider>
   );
 };
 

@@ -1,60 +1,68 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 
-const Header: React.FC = () => {
-  const navigate = useNavigate();
+interface HeaderProps {
+  onOpenSidebar: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onOpenSidebar }) => {
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="absolute top-[13px] left-[336px] w-[1078px] h-[67px]">
-      <div className="flex items-center justify-between w-full h-full bg-global-4 rounded-[10px] px-6">
-        <div className="flex items-center gap-6">
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            Thu, 3 April
-          </span>
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            4:34 pm
-          </span>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <img 
-            src="/images/img_ellipse_1.png" 
-            alt="Profile"
-            className="w-[42px] h-[42px] rounded-[21px] cursor-pointer"
-            onClick={() => navigate('/profile')}
-          />
-          
-          <div className="flex flex-col">
-            <span className="text-[16px] font-raleway font-semibold leading-[19px] text-global-1">
-              Dr. Jhon Doe
-            </span>
-            <span className="text-[14px] font-raleway font-normal leading-[17px] text-header-1">
-              Doctor
-            </span>
-          </div>
-          
-          <div className="w-[1px] h-[34px] bg-global-1 opacity-30"></div>
-          
-          <img 
-            src="/images/img_famiconsnotificationsoutline.svg" 
-            alt="Notifications"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_weuisettingoutlined.svg" 
-            alt="Settings"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_iconoirlogout.svg" 
-            alt="Logout"
-            className="w-[28px] h-[28px] cursor-pointer hover:opacity-80"
-          />
-        </div>
+    <header className="flex items-center justify-between h-16 px-4 bg-global-4 shadow-md">
+      <button className="md:hidden text-global-1" onClick={onOpenSidebar} aria-label="Open sidebar">
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <h1 className="text-[19px] font-raleway font-medium text-global-1">MedVoice</h1>
+
+      <div className="flex items-center gap-4">
+        <button onClick={toggleTheme} aria-label="Toggle theme" className="text-global-1">
+          {theme === 'light' ? (
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3v1m0 16v1m8.66-12.66l-.7.7M4.04 19.96l-.7.7M21 12h-1M4 12H3m16.66 5.66l-.7-.7M4.04 4.04l-.7-.7M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"
+              />
+            </svg>
+          )}
+        </button>
+        <img
+          src="/images/img_famiconsnotificationsoutline.svg"
+          alt="Notifications"
+          className="w-6 h-6"
+        />
       </div>
-    </div>
+    </header>
   );
 };
 

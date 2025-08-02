@@ -1,63 +1,59 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const Sidebar: React.FC = () => {
-  const navigate = useNavigate();
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
 
-  const menuItems = [
-    { icon: '/images/img_mynauihome.svg', label: 'Home', path: '/', active: true },
-    { icon: '/images/img_magedashboard.svg', label: 'Dashboard', path: '/dashboard', active: false },
-    { icon: '/images/img_image_8.png', label: 'Calender', path: '/calendar', active: false },
-    { icon: '/images/img_image_9.png', label: 'Profile', path: '/profile', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra-2', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra-3', active: false }
-  ];
+const menuItems = [
+  { icon: '/images/img_mynauihome.svg', label: 'Home', path: '/' },
+  { icon: '/images/img_magedashboard.svg', label: 'Dashboard', path: '/dashboard' },
+  { icon: '/images/img_image_8.png', label: 'Calendar', path: '/calendar' },
+  { icon: '/images/img_ellipse_1.png', label: 'Profile', path: '/profile' },
+  { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra' },
+  { icon: '/images/img_image_9.png', label: 'Extra 2', path: '/extra-2' },
+  { icon: '/images/img_image_9.png', label: 'Extra 3', path: '/extra-3' },
+];
 
+const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   return (
-    <div className="absolute top-0 left-0 w-[310px] h-[841px] bg-sidebar-1 flex flex-col">
-      {/* Logo Section */}
-      <div className="flex items-center justify-between mt-[37px] ml-[22px] mr-[27px]">
-        <img 
-          src="/images/img_sidebarlogo.png" 
-          alt="Logo"
-          className="w-[112px] h-[47px]"
-        />
-        <div className="w-[40px] h-[40px] bg-global-4 rounded-[20px] flex items-center justify-center shadow-sm cursor-pointer hover:opacity-80">
-          <img 
-            src="/images/img_materialsymbolslightarrowback.svg" 
-            alt="Collapse"
-            className="w-[27px] h-[27px]"
-          />
-        </div>
-      </div>
+    <>
+      {/* Overlay for mobile */}
+      <div
+        className={`fixed inset-0 bg-black/50 z-20 md:hidden ${open ? 'block' : 'hidden'}`}
+        onClick={onClose}
+      />
 
-      {/* Menu Items */}
-      <div className="flex flex-col mt-[66px] gap-[22px]">
-        {menuItems.map((item, index) => (
-          <div
-            key={index}
-            onClick={() => navigate(item.path)}
-            className={`
-              flex items-center mx-[22px] px-[29px] py-[16px] rounded-[15px] cursor-pointer transition-all duration-200
-              ${item.active ? 'bg-global-4' : 'hover:bg-global-2'}
-            `}
-          >
-            <img 
-              src={item.icon} 
-              alt={item.label}
-              className="w-[27px] h-[27px] mr-[11px]"
-            />
-            <span className={`
-              text-[20px] font-raleway leading-[24px]
-              ${item.active ? 'font-medium text-global-1' : 'font-normal text-global-3'}
-            `}>
+      <aside
+        className={`fixed inset-y-0 left-0 z-30 w-[280px] bg-sidebar-1 transform transition-transform duration-300
+        ${open ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
+      >
+        <div className="flex items-center justify-between p-4">
+          <img src="/images/img_sidebarlogo.png" alt="Logo" className="h-12" />
+          <button className="text-global-3 md:hidden" onClick={onClose} aria-label="Close sidebar">
+            ✕
+          </button>
+        </div>
+
+        <nav className="mt-6 flex flex-col gap-1">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center px-6 py-3 text-global-3 text-[20px] font-raleway transition-colors
+                ${isActive ? 'bg-global-4 text-global-1 rounded-[15px]' : 'hover:bg-global-2 rounded-[15px]'}`
+              }
+            >
+              <img src={item.icon} alt="" className="w-[27px] h-[27px] mr-3" />
               {item.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
+    </>
   );
 };
 

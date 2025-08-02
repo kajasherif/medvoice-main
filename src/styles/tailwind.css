@@ -17,10 +17,17 @@
     --sidebar-bg-1: #161616;
 
     /* Header Colors */
-    --header-text-1: #1472ff;
+    --header-text-1: #1573ff;
 
     /* Button Colors */
-    --button-bg-1: #1472ff;
+    --button-bg-1: #1573ff;
+  }
+
+  .dark {
+    --global-bg-3: #1f1f1f;
+    --global-bg-4: #2a2a2a;
+    --global-text-1: #ffffff;
+    --global-text-3: #ffffff;
   }
 }
 
