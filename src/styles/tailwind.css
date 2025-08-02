@@ -22,6 +22,26 @@
     /* Button Colors */
     --button-bg-1: #1472ff;
   }
+
+  [data-theme='purple'] {
+    --sidebar-bg-1: #4c1d95;
+    --header-text-1: #7e22ce;
+    --button-bg-1: #7e22ce;
+  }
+
+  [data-theme='dark'] {
+    --global-bg-3: #1f1f1f;
+    --global-text-1: #ffffff;
+    --sidebar-bg-1: #000000;
+    --header-text-1: #ffffff;
+    --button-bg-1: #1472ff;
+  }
+
+  [data-theme='medical'] {
+    --sidebar-bg-1: #0d9488;
+    --header-text-1: #0d9488;
+    --button-bg-1: #0d9488;
+  }
 }
 
 @layer utilities {

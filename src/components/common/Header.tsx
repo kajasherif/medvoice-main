@@ -1,61 +1,79 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useResponsive } from '../../hooks/useResponsive';
+import { useTheme } from '../../hooks/useTheme';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onMenuToggle?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'default' : 'dark');
+  };
 
   return (
-    <div className="absolute top-[13px] left-[336px] w-[1078px] h-[67px]">
-      <div className="flex items-center justify-between w-full h-full bg-global-4 rounded-[10px] px-6">
-        <div className="flex items-center gap-6">
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            Thu, 3 April
-          </span>
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            4:34 pm
-          </span>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <img 
-            src="/images/img_ellipse_1.png" 
-            alt="Profile"
-            className="w-[42px] h-[42px] rounded-[21px] cursor-pointer"
-            onClick={() => navigate('/profile')}
-          />
-          
-          <div className="flex flex-col">
-            <span className="text-[16px] font-raleway font-semibold leading-[19px] text-global-1">
-              Dr. Jhon Doe
-            </span>
-            <span className="text-[14px] font-raleway font-normal leading-[17px] text-header-1">
-              Doctor
-            </span>
-          </div>
-          
-          <div className="w-[1px] h-[34px] bg-global-1 opacity-30"></div>
-          
-          <img 
-            src="/images/img_famiconsnotificationsoutline.svg" 
-            alt="Notifications"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_weuisettingoutlined.svg" 
-            alt="Settings"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_iconoirlogout.svg" 
-            alt="Logout"
-            className="w-[28px] h-[28px] cursor-pointer hover:opacity-80"
-          />
-        </div>
+    <header
+      className="fixed top-0 left-0 right-0 z-20 bg-global-4 h-16 flex items-center justify-between px-4 shadow md:pl-72"
+      role="banner"
+    >
+      {isMobile && (
+        <button
+          onClick={onMenuToggle}
+          className="p-2 rounded focus:outline-none focus:ring"
+          aria-label="Open menu"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      )}
+      <h1 className="text-lg font-raleway font-medium text-global-1">MedVoice</h1>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          className="w-8 h-8 flex items-center justify-center rounded hover:opacity-80"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 3v1m0 16v1m8.66-9H21m-17 0H3m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.02 12.02l.7-.7M6.34 17.66l.7-.7M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+        </button>
+        <img
+          src="/images/img_ellipse_1.png"
+          alt="Profile"
+          className="w-8 h-8 rounded-full cursor-pointer"
+          onClick={() => navigate('/profile')}
+        />
       </div>
-    </div>
+    </header>
   );
 };
 
-export default Header;
+export default React.memo(Header);
