@@ -22,6 +22,14 @@
     /* Button Colors */
     --button-bg-1: #1472ff;
   }
+
+  .dark {
+    --global-bg-3: #1e1e1e;
+    --global-bg-4: #2c2c2c;
+    --global-text-1: #ffffff;
+    --global-text-2: #ffffffb3;
+    --global-text-3: #ffffff;
+  }
 }
 
 @layer utilities {
