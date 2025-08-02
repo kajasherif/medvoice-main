@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import Sidebar from '../../components/common/Sidebar';
 import Button from '../../components/ui/Button';
 import Dropdown from '../../components/ui/Dropdown';
+import QuickAccessCard from '../../components/ui/QuickAccessCard';
 
 interface VoiceRecordingState {
   isRecording: boolean;
@@ -20,6 +22,7 @@ interface QuickAccessItem {
 }
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [voiceState, setVoiceState] = useState<VoiceRecordingState>({
@@ -97,7 +100,7 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
       image: '/images/img_image_1.png',
       background: '/images/img_.png',
       gradient: 'from-blue-600 to-blue-400',
-      onClick: () => console.log('Navigate to prescriptions')
+      onClick: () => navigate('/prescriptions')
     },
     {
       title: 'View / Manage Consultations',
@@ -261,32 +264,15 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
               <div className="w-72 lg:w-80 xl:w-96 flex-shrink-0">
                 <div className="grid grid-cols-1 gap-4 lg:gap-5">
                   {quickAccessItems.map((item, index) => (
-                    <div
+                    <QuickAccessCard
                       key={index}
+                      title={item.title}
+                      image={item.image}
+                      background={item.background}
+                      gradient={item.gradient}
                       onClick={item.onClick}
-                      className={`relative h-32 lg:h-36 xl:h-40 rounded-lg cursor-pointer hover:opacity-90 transition-all shadow-sm overflow-hidden bg-gradient-to-r ${item.gradient}`}
-                    >
-                      <div 
-                        className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"
-                        style={{
-                          backgroundImage: `url(${item.background})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          backgroundBlendMode: 'soft-light',
-                          opacity: 0.3
-                        }}
-                      />
-                      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="w-10 h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 mb-3"
-                        />
-                        <h3 className="text-sm lg:text-base xl:text-lg font-raleway font-semibold leading-tight text-white">
-                          {item.title}
-                        </h3>
-                      </div>
-                    </div>
+                      size="medium"
+                    />
                   ))}
                 </div>
               </div>
@@ -297,34 +283,15 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
               {/* Quick Access Panel - Top on Mobile */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {quickAccessItems.map((item, index) => (
-                  <div
+                  <QuickAccessCard
                     key={index}
+                    title={item.title}
+                    image={item.image}
+                    background={item.background}
+                    gradient={item.gradient}
                     onClick={item.onClick}
-                    className={`relative h-24 rounded-lg cursor-pointer hover:opacity-90 transition-all shadow-sm overflow-hidden bg-gradient-to-r ${item.gradient}`}
-                  >
-                    <div 
-                      className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"
-                      style={{
-                        backgroundImage: `url(${item.background})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundBlendMode: 'soft-light',
-                        opacity: 0.3
-                      }}
-                    />
-                    <div className="relative z-10 flex items-center justify-center h-full text-center px-2">
-                      <div className="flex items-center space-x-2">
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="w-8 h-8 flex-shrink-0"
-                        />
-                        <h3 className="text-xs font-raleway font-semibold leading-tight text-white">
-                          {item.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
+                    size="small"
+                  />
                 ))}
               </div>
 
