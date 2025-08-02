@@ -1,64 +1,61 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useNavigation } from '../../hooks/useNavigation';
+import { useResponsive } from '../../hooks/useResponsive';
 
 const Sidebar: React.FC = () => {
-  const navigate = useNavigate();
-
-  const menuItems = [
-    { icon: '/images/img_mynauihome.svg', label: 'Home', path: '/', active: true },
-    { icon: '/images/img_magedashboard.svg', label: 'Dashboard', path: '/dashboard', active: false },
-    { icon: '/images/img_image_8.png', label: 'Calender', path: '/calendar', active: false },
-    { icon: '/images/img_image_9.png', label: 'Profile', path: '/profile', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra-2', active: false },
-    { icon: '/images/img_image_9.png', label: 'Extra', path: '/extra-3', active: false }
-  ];
+  const { items, activePath } = useNavigation();
+  const { isDesktop } = useResponsive();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="absolute top-0 left-0 w-[310px] h-[841px] bg-sidebar-1 flex flex-col">
-      {/* Logo Section */}
-      <div className="flex items-center justify-between mt-[37px] ml-[22px] mr-[27px]">
-        <img 
-          src="/images/img_sidebarlogo.png" 
-          alt="Logo"
-          className="w-[112px] h-[47px]"
-        />
-        <div className="w-[40px] h-[40px] bg-global-4 rounded-[20px] flex items-center justify-center shadow-sm cursor-pointer hover:opacity-80">
-          <img 
-            src="/images/img_materialsymbolslightarrowback.svg" 
-            alt="Collapse"
-            className="w-[27px] h-[27px]"
-          />
-        </div>
-      </div>
-
-      {/* Menu Items */}
-      <div className="flex flex-col mt-[66px] gap-[22px]">
-        {menuItems.map((item, index) => (
-          <div
-            key={index}
-            onClick={() => navigate(item.path)}
-            className={`
-              flex items-center mx-[22px] px-[29px] py-[16px] rounded-[15px] cursor-pointer transition-all duration-200
-              ${item.active ? 'bg-global-4' : 'hover:bg-global-2'}
-            `}
+    <aside
+      className={`hidden bg-sidebar-1 text-global-3 transition-all duration-300 md:flex md:flex-col ${
+        collapsed ? 'w-16' : 'w-64'
+      }`}
+    >
+      <div className="flex items-center justify-between p-4">
+        <img src="/images/img_sidebarlogo.png" alt="Logo" className="h-8" />
+        {isDesktop && (
+          <button
+            aria-label="Collapse sidebar"
+            onClick={() => setCollapsed((v) => !v)}
+            className="p-2 hover:opacity-80"
           >
-            <img 
-              src={item.icon} 
-              alt={item.label}
-              className="w-[27px] h-[27px] mr-[11px]"
-            />
-            <span className={`
-              text-[20px] font-raleway leading-[24px]
-              ${item.active ? 'font-medium text-global-1' : 'font-normal text-global-3'}
-            `}>
-              {item.label}
-            </span>
-          </div>
-        ))}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+        )}
       </div>
-    </div>
+      <nav className="flex-1">
+        {items.map((item) => (
+          <NavLink
+            key={item.id}
+            to={item.path}
+            className={`flex items-center gap-3 px-4 py-2 hover:bg-global-2 transition-colors ${
+              activePath === item.path ? 'bg-global-2' : ''
+            }`}
+          >
+            <img src={item.icon} alt="" className="h-5 w-5" />
+            {!collapsed && <span>{item.label}</span>}
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
   );
 };
 
 export default Sidebar;
+

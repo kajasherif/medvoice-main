@@ -1,16 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Import page components
 import DashboardPage from './pages/Dashboard';
+import Layout from './components/common/Layout';
+import { NavigationProvider } from './context/NavigationContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const AppRoutes = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/" element={<DashboardPage />} />
-      </Routes>
+      <ThemeProvider>
+        <NavigationProvider>
+          <Routes>
+            <Route
+              path="/dashboard"
+              element={
+                <Layout>
+                  <DashboardPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <Layout>
+                  <DashboardPage />
+                </Layout>
+              }
+            />
+          </Routes>
+        </NavigationProvider>
+      </ThemeProvider>
     </Router>
   );
 };

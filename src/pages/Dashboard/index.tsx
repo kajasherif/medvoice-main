@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../../components/common/Header';
-import Sidebar from '../../components/common/Sidebar';
 import Button from '../../components/ui/Button';
 import Dropdown from '../../components/ui/Dropdown';
 
@@ -103,11 +101,7 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
 
   return (
     <div className="relative w-[1440px] h-[841px] bg-global-3">
-      {/* Sidebar */}
-      <Sidebar />
-      
-      {/* Header */}
-      <Header />
+      {/* Layout now provides Header and Sidebar */}
       
       {/* Main Content Area */}
       <div className="absolute top-[100px] left-[336px] flex gap-0">

@@ -1,61 +1,70 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useResponsive } from '../../hooks/useResponsive';
+import { useTheme } from '../../hooks/useTheme';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onMenuToggle?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div className="absolute top-[13px] left-[336px] w-[1078px] h-[67px]">
-      <div className="flex items-center justify-between w-full h-full bg-global-4 rounded-[10px] px-6">
-        <div className="flex items-center gap-6">
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            Thu, 3 April
-          </span>
-          <span className="text-[19px] font-raleway font-medium leading-[23px] text-global-1">
-            4:34 pm
-          </span>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <img 
-            src="/images/img_ellipse_1.png" 
-            alt="Profile"
-            className="w-[42px] h-[42px] rounded-[21px] cursor-pointer"
-            onClick={() => navigate('/profile')}
-          />
-          
-          <div className="flex flex-col">
-            <span className="text-[16px] font-raleway font-semibold leading-[19px] text-global-1">
-              Dr. Jhon Doe
-            </span>
-            <span className="text-[14px] font-raleway font-normal leading-[17px] text-header-1">
-              Doctor
-            </span>
-          </div>
-          
-          <div className="w-[1px] h-[34px] bg-global-1 opacity-30"></div>
-          
-          <img 
-            src="/images/img_famiconsnotificationsoutline.svg" 
-            alt="Notifications"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_weuisettingoutlined.svg" 
-            alt="Settings"
-            className="w-[31px] h-[31px] cursor-pointer hover:opacity-80"
-          />
-          
-          <img 
-            src="/images/img_iconoirlogout.svg" 
-            alt="Logout"
-            className="w-[28px] h-[28px] cursor-pointer hover:opacity-80"
-          />
-        </div>
+    <header className="flex h-16 items-center justify-between bg-global-4 px-4 shadow md:px-6">
+      {isMobile && (
+        <button
+          aria-label="Open menu"
+          onClick={onMenuToggle}
+          className="p-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      )}
+      <div className="flex items-center gap-2">
+        <span className="text-header-1 font-raleway text-lg font-semibold">MedVoice</span>
       </div>
-    </div>
+      <div className="flex items-center gap-4">
+        <button
+          aria-label="Toggle theme"
+          onClick={() => setTheme(theme === 'dark' ? 'default' : 'dark')}
+          className="p-2 hover:opacity-80"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 3v1m0 16v1m8.66-13.66l-.7.7M4.04 19.96l-.7.7M21 12h-1M4 12H3m16.66 7.66l-.7-.7M4.04 4.04l-.7-.7M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+        </button>
+        <img
+          src="/images/img_ellipse_1.png"
+          alt="Profile"
+          className="h-8 w-8 rounded-full cursor-pointer"
+          onClick={() => navigate('/profile')}
+        />
+      </div>
+    </header>
   );
 };
 
 export default Header;
+

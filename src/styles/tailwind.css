@@ -22,6 +22,18 @@
     /* Button Colors */
     --button-bg-1: #1472ff;
   }
+
+  :root[data-theme='dark'] {
+    --global-bg-3: #1f2937;
+    --global-bg-4: #111827;
+    --global-text-1: #ffffff;
+    --global-text-2: #d1d5db;
+    --sidebar-bg-1: #111827;
+  }
+
+  :root[data-theme='purple'] {
+    --sidebar-bg-1: #6b21a8;
+  }
 }
 
 @layer utilities {
