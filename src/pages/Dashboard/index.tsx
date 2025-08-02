@@ -280,22 +280,7 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
 
             {/* Mobile Layout */}
             <div className="md:hidden space-y-4">
-              {/* Quick Access Panel - Top on Mobile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {quickAccessItems.map((item, index) => (
-                  <QuickAccessCard
-                    key={index}
-                    title={item.title}
-                    image={item.image}
-                    background={item.background}
-                    gradient={item.gradient}
-                    onClick={item.onClick}
-                    size="small"
-                  />
-                ))}
-              </div>
-
-              {/* Text Editor Section */}
+              {/* Text Editor Section - Now at top on Mobile */}
               <div className="bg-global-4 rounded-lg border border-global-1 border-opacity-30 flex flex-col" style={{ minHeight: '60vh' }}>
                 {/* Formatting Controls */}
                 <div className="flex flex-wrap items-center gap-2 p-3 border-b border-global-1 border-opacity-20">
@@ -377,6 +362,21 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Quick Access Panel - Now at bottom on Mobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {quickAccessItems.map((item, index) => (
+                  <QuickAccessCard
+                    key={index}
+                    title={item.title}
+                    image={item.image}
+                    background={item.background}
+                    gradient={item.gradient}
+                    onClick={item.onClick}
+                    size="small"
+                  />
+                ))}
               </div>
             </div>
           </div>
