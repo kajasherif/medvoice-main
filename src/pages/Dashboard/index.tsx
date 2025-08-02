@@ -114,7 +114,7 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
       image: '/images/img_image_3.png',
       background: '/images/img__1.png',
       gradient: 'from-red-700 to-red-500',
-      onClick: () => console.log('Navigate to patient history')
+      onClick: () => navigate('/patientConsultations')
     },
     {
       title: 'Important links lab test results',
