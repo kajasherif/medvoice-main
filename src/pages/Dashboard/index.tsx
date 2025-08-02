@@ -21,6 +21,7 @@ interface QuickAccessItem {
 
 const Dashboard: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [voiceState, setVoiceState] = useState<VoiceRecordingState>({
     isRecording: false,
     isPaused: false,
@@ -45,6 +46,10 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
     setSidebarCollapsed(collapsed);
   };
 
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   const handleStartRecording = () => {
     setVoiceState(prev => ({ ...prev, isRecording: true, isPaused: false }));
     console.log('Recording started');
@@ -62,7 +67,6 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
 
   const handleDownloadRecording = () => {
     console.log('Downloading recording');
-    // Simulate download functionality
     const link = document.createElement('a');
     link.href = '#';
     link.download = 'voice-recording.wav';
@@ -118,143 +122,297 @@ Lorem ipsum" is placeholder text, or dummy text, used in graphic design, publish
     }
   ];
 
-  // Calculate left position for main content based on sidebar state
-  // When collapsed: better center content to reduce excessive right-side space
-  const contentLeftPosition = sidebarCollapsed ? 160 : 356;
-
   return (
-    <div className="relative w-[1440px] h-[841px] bg-global-3">
-      {/* Sidebar */}
-      <Sidebar 
-        isCollapsed={sidebarCollapsed}
-        onToggleCollapse={handleSidebarToggle}
-      />
-      
-      {/* Header */}
-      <Header sidebarCollapsed={sidebarCollapsed} />
-      
-      {/* Main Content Area */}
-      <div 
-        className="absolute top-[100px] flex gap-0 transition-all duration-300"
-        style={{ left: `${contentLeftPosition}px` }}
+    <div className="min-h-screen bg-global-3 flex flex-col lg:flex-row">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={handleMobileMenuToggle}
+        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-sidebar-1 rounded-lg flex items-center justify-center text-white"
       >
-        {/* Text Editor Section */}
-        <div className="w-[676px] h-[688px] bg-global-4 rounded-[10px] border border-global-1 border-opacity-30 flex flex-col">
-          {/* Formatting Controls */}
-          <div className="flex items-center gap-4 mt-[17px] ml-[22px] mb-4">
-            <Dropdown
-              options={fontOptions}
-              value="Inter (Medium)"
-              onChange={handleFontChange}
-              className="w-[137px]"
-            />
-            <Dropdown
-              options={sizeOptions}
-              value="Size: 12"
-              onChange={handleSizeChange}
-              className="w-[92px]"
-            />
-          </div>
-          
-          {/* Text Content Area */}
-          <div className="flex-1 mx-[22px] mb-4">
-            <textarea
-              value={textContent}
-              onChange={(e) => setTextContent(e.target.value)}
-              className="w-full h-full text-[17px] font-opensans font-light leading-[23px] text-global-1 bg-transparent border-none outline-none resize-none"
-              placeholder="Start typing your medical notes here..."
-            />
-          </div>
-          
-          {/* Voice Recording Controls */}
-          <div className="mx-6 mb-6">
-            <div className="bg-blue-50 rounded-[10px] p-4">
-              {/* Recording Controls Row */}
-              <div className="flex items-center justify-center gap-4 mb-3">
-                <button
-                  onClick={handleStartRecording}
-                  className={`w-[42px] h-[42px] rounded-full flex items-center justify-center transition-all ${
-                    voiceState.isRecording ? 'opacity-50' : 'hover:opacity-80'
-                  }`}
-                  disabled={voiceState.isRecording}
-                >
-                  <img src="/images/img_proiconsrecord.svg" alt="Record" className="w-[42px] h-[42px]" />
-                </button>
-                
-                <button
-                  onClick={handlePauseRecording}
-                  className="w-[64px] h-[64px] rounded-full flex items-center justify-center hover:opacity-80 transition-all"
-                >
-                  <img src="/images/img_group_13.svg" alt="Pause/Play" className="w-[64px] h-[64px]" />
-                </button>
-                
-                <button
-                  onClick={handleStopRecording}
-                  className="w-[42px] h-[42px] rounded-full flex items-center justify-center hover:opacity-80 transition-all"
-                >
-                  <img src="/images/img_fluentrecordstop48regular.svg" alt="Stop" className="w-[42px] h-[42px]" />
-                </button>
-                
-                <Button
-                  onClick={handleSubmit}
-                  variant="primary"
-                  className="ml-8 px-[25px] py-[10px]"
-                >
-                  Submit
-                </Button>
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+        lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 
+        transition-transform duration-300 ease-in-out
+      `}>
+        <Sidebar 
+          isCollapsed={sidebarCollapsed}
+          onToggleCollapse={handleSidebarToggle}
+          isMobile={mobileMenuOpen}
+          onMobileClose={() => setMobileMenuOpen(false)}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Header */}
+        <div className="flex-shrink-0">
+          <Header 
+            sidebarCollapsed={sidebarCollapsed}
+            onMobileMenuToggle={handleMobileMenuToggle}
+          />
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 p-3 sm:p-4 lg:p-6 pt-20 lg:pt-6">
+          <div className="max-w-full mx-auto">
+            {/* Desktop/Tablet Layout */}
+            <div className="hidden md:flex gap-4 lg:gap-6 h-full">
+              {/* Text Editor Section */}
+              <div className="flex-1 min-w-0">
+                <div className="bg-global-4 rounded-lg border border-global-1 border-opacity-30 h-full flex flex-col">
+                  {/* Formatting Controls */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-4 border-b border-global-1 border-opacity-20">
+                    <Dropdown
+                      options={fontOptions}
+                      value="Inter (Medium)"
+                      onChange={handleFontChange}
+                      className="w-32 sm:w-36"
+                    />
+                    <Dropdown
+                      options={sizeOptions}
+                      value="Size: 12"
+                      onChange={handleSizeChange}
+                      className="w-20 sm:w-24"
+                    />
+                  </div>
+                  
+                  {/* Text Content Area */}
+                  <div className="flex-1 p-4">
+                    <textarea
+                      value={textContent}
+                      onChange={(e) => setTextContent(e.target.value)}
+                      className="w-full h-full text-sm lg:text-base font-opensans font-light leading-relaxed text-global-1 bg-transparent border-none outline-none resize-none"
+                      placeholder="Start typing your medical notes here..."
+                    />
+                  </div>
+                  
+                  {/* Voice Recording Controls */}
+                  <div className="p-4 border-t border-global-1 border-opacity-20">
+                    <div className="bg-blue-50 rounded-lg p-4">
+                      {/* Recording Controls Row */}
+                      <div className="flex items-center justify-center gap-2 sm:gap-4 mb-3">
+                        <button
+                          onClick={handleStartRecording}
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all ${
+                            voiceState.isRecording ? 'opacity-50' : 'hover:opacity-80'
+                          }`}
+                          disabled={voiceState.isRecording}
+                        >
+                          <img src="/images/img_proiconsrecord.svg" alt="Record" className="w-full h-full" />
+                        </button>
+                        
+                        <button
+                          onClick={handlePauseRecording}
+                          className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center hover:opacity-80 transition-all"
+                        >
+                          <img src="/images/img_group_13.svg" alt="Pause/Play" className="w-full h-full" />
+                        </button>
+                        
+                        <button
+                          onClick={handleStopRecording}
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-all"
+                        >
+                          <img src="/images/img_fluentrecordstop48regular.svg" alt="Stop" className="w-full h-full" />
+                        </button>
+                        
+                        <Button
+                          onClick={handleSubmit}
+                          variant="primary"
+                          size="sm"
+                          className="ml-2 sm:ml-4"
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                      
+                      {/* Audio Timeline */}
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-xs sm:text-sm font-opensans font-normal text-gray-600">
+                          {voiceState.duration}
+                        </span>
+                        <img src="/images/img_group.svg" alt="Audio waveform" className="w-16 sm:w-24 h-4 sm:h-6" />
+                        <button
+                          onClick={handleDeleteRecording}
+                          className="w-4 h-4 hover:opacity-80 transition-all"
+                        >
+                          <img src="/images/img_icbaselinedelete.svg" alt="Delete" className="w-full h-full" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              {/* Audio Timeline */}
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-[14px] font-opensans font-normal leading-[20px] text-gray-600">
-                  {voiceState.duration}
-                </span>
-                <img src="/images/img_group.svg" alt="Audio waveform" className="w-[108px] h-[27px]" />
-                <button
-                  onClick={handleDeleteRecording}
-                  className="w-[17px] h-[17px] hover:opacity-80 transition-all"
-                >
-                  <img src="/images/img_icbaselinedelete.svg" alt="Delete" className="w-[17px] h-[17px]" />
-                </button>
+              {/* Quick Access Panel */}
+              <div className="w-72 lg:w-80 xl:w-96 flex-shrink-0">
+                <div className="grid grid-cols-1 gap-4 lg:gap-5">
+                  {quickAccessItems.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={item.onClick}
+                      className={`relative h-32 lg:h-36 xl:h-40 rounded-lg cursor-pointer hover:opacity-90 transition-all shadow-sm overflow-hidden bg-gradient-to-r ${item.gradient}`}
+                    >
+                      <div 
+                        className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"
+                        style={{
+                          backgroundImage: `url(${item.background})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundBlendMode: 'soft-light',
+                          opacity: 0.3
+                        }}
+                      />
+                      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-10 h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 mb-3"
+                        />
+                        <h3 className="text-sm lg:text-base xl:text-lg font-raleway font-semibold leading-tight text-white">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Layout */}
+            <div className="md:hidden space-y-4">
+              {/* Quick Access Panel - Top on Mobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {quickAccessItems.map((item, index) => (
+                  <div
+                    key={index}
+                    onClick={item.onClick}
+                    className={`relative h-24 rounded-lg cursor-pointer hover:opacity-90 transition-all shadow-sm overflow-hidden bg-gradient-to-r ${item.gradient}`}
+                  >
+                    <div 
+                      className="absolute inset-0 bg-black bg-opacity-20 rounded-lg"
+                      style={{
+                        backgroundImage: `url(${item.background})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundBlendMode: 'soft-light',
+                        opacity: 0.3
+                      }}
+                    />
+                    <div className="relative z-10 flex items-center justify-center h-full text-center px-2">
+                      <div className="flex items-center space-x-2">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-8 h-8 flex-shrink-0"
+                        />
+                        <h3 className="text-xs font-raleway font-semibold leading-tight text-white">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Text Editor Section */}
+              <div className="bg-global-4 rounded-lg border border-global-1 border-opacity-30 flex flex-col" style={{ minHeight: '60vh' }}>
+                {/* Formatting Controls */}
+                <div className="flex flex-wrap items-center gap-2 p-3 border-b border-global-1 border-opacity-20">
+                  <Dropdown
+                    options={fontOptions}
+                    value="Inter (Medium)"
+                    onChange={handleFontChange}
+                    className="w-32"
+                  />
+                  <Dropdown
+                    options={sizeOptions}
+                    value="Size: 12"
+                    onChange={handleSizeChange}
+                    className="w-20"
+                  />
+                </div>
+                
+                {/* Text Content Area */}
+                <div className="flex-1 p-3">
+                  <textarea
+                    value={textContent}
+                    onChange={(e) => setTextContent(e.target.value)}
+                    className="w-full h-full min-h-[300px] text-sm font-opensans font-light leading-relaxed text-global-1 bg-transparent border-none outline-none resize-none"
+                    placeholder="Start typing your medical notes here..."
+                  />
+                </div>
+                
+                {/* Voice Recording Controls */}
+                <div className="p-3 border-t border-global-1 border-opacity-20">
+                  <div className="bg-blue-50 rounded-lg p-3">
+                    {/* Recording Controls Row */}
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                      <button
+                        onClick={handleStartRecording}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                          voiceState.isRecording ? 'opacity-50' : 'hover:opacity-80'
+                        }`}
+                        disabled={voiceState.isRecording}
+                      >
+                        <img src="/images/img_proiconsrecord.svg" alt="Record" className="w-full h-full" />
+                      </button>
+                      
+                      <button
+                        onClick={handlePauseRecording}
+                        className="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-80 transition-all"
+                      >
+                        <img src="/images/img_group_13.svg" alt="Pause/Play" className="w-full h-full" />
+                      </button>
+                      
+                      <button
+                        onClick={handleStopRecording}
+                        className="w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition-all"
+                      >
+                        <img src="/images/img_fluentrecordstop48regular.svg" alt="Stop" className="w-full h-full" />
+                      </button>
+                      
+                      <Button
+                        onClick={handleSubmit}
+                        variant="primary"
+                        size="sm"
+                        className="ml-2"
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                    
+                    {/* Audio Timeline */}
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-xs font-opensans font-normal text-gray-600">
+                        {voiceState.duration}
+                      </span>
+                      <img src="/images/img_group.svg" alt="Audio waveform" className="w-16 h-4" />
+                      <button
+                        onClick={handleDeleteRecording}
+                        className="w-4 h-4 hover:opacity-80 transition-all"
+                      >
+                        <img src="/images/img_icbaselinedelete.svg" alt="Delete" className="w-full h-full" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        {/* Vertical Divider */}
-        <div className="w-[1px] h-[688px] bg-global-1 opacity-30 mx-[12px]"></div>
-        
-        {/* Quick Access Panel */}
-        <div className="w-[351px] h-[688px] flex flex-col gap-[20px]">
-          {quickAccessItems.map((item, index) => (
-            <div
-              key={index}
-              onClick={item.onClick}
-              className={`relative w-[351px] h-[157px] rounded-[11px] cursor-pointer hover:opacity-90 transition-all shadow-sm overflow-hidden bg-gradient-to-r ${item.gradient}`}
-            >
-              {/* Background overlay for subtle texture */}
-              <div 
-                className="absolute inset-0 bg-black bg-opacity-20 rounded-[11px]"
-                style={{
-                  backgroundImage: `url(${item.background})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundBlendMode: 'soft-light',
-                  opacity: 0.3
-                }}
-              ></div>
-              <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                <img 
-                  src={item.image} 
-                  alt={item.title}
-                  className="w-[53px] h-[53px] mb-4"
-                />
-                <h3 className="text-[19px] font-raleway font-semibold leading-[23px] text-white max-w-[261px]">
-                  {item.title}
-                </h3>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

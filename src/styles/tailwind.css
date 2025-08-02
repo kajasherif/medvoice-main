@@ -22,10 +22,45 @@
     /* Button Colors */
     --button-bg-1: #1472ff;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Raleway', 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+  /* Responsive text sizing */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    html {
+      font-size: 16px;
+    }
+  }
 }
 
 @layer utilities {
-  /* Global */
+  /* Global Background Colors */
   .bg-global-1 {
     background-color: var(--global-bg-1);
   }
@@ -38,6 +73,8 @@
   .bg-global-4 {
     background-color: var(--global-bg-4);
   }
+
+  /* Global Text Colors */
   .text-global-1 {
     color: var(--global-text-1);
   }
@@ -48,18 +85,199 @@
     color: var(--global-text-3);
   }
 
-  /* Sidebar */
+  /* Sidebar Colors */
   .bg-sidebar-1 {
     background-color: var(--sidebar-bg-1);
   }
 
-  /* Header */
+  /* Header Colors */
   .text-header-1 {
     color: var(--header-text-1);
   }
 
-  /* Button */
+  /* Button Colors */
   .bg-button-1 {
     background-color: var(--button-bg-1);
+  }
+
+  /* Responsive Container */
+  .container-responsive {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-responsive {
+      max-width: 640px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container-responsive {
+      max-width: 768px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      max-width: 1024px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container-responsive {
+      max-width: 1280px;
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .container-responsive {
+      max-width: 1536px;
+    }
+  }
+
+  /* Mobile-first responsive spacing */
+  .spacing-responsive {
+    padding: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .spacing-responsive {
+      padding: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .spacing-responsive {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Responsive grid layouts */
+  .grid-responsive-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .grid-responsive-1 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-responsive-1 {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  /* Mobile navigation utilities */
+  .mobile-nav-open {
+    overflow: hidden;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Glass morphism effect */
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Responsive text truncation */
+  .text-truncate-responsive {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .text-truncate-responsive {
+      max-width: 120px;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .text-truncate-responsive {
+      max-width: 200px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .text-truncate-responsive {
+      max-width: 300px;
+    }
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1;
+  }
+
+  /* Responsive image */
+  .img-responsive {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Print styles */
+  @media print {
+    .print-hidden {
+      display: none !important;
+    }
+    
+    .print-visible {
+      display: block !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .bg-global-4 {
+      background-color: #ffffff;
+    }
+    
+    .text-global-1 {
+      color: #000000;
+    }
+    
+    .border-global-2 {
+      border-color: #000000;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .transition-smooth,
+    .transition-all,
+    .card-hover {
+      transition: none !important;
+      animation: none !important;
+    }
   }
 }
