@@ -278,16 +278,7 @@ For support and questions:
 - 🐛 Issues: [GitHub Issues](https://github.com/your-username/medvoice/issues)
 - 📖 Wiki: [Project Wiki](https://github.com/your-username/medvoice/wiki)
 
-## 🗺️ Roadmap
-
-- [ ] **v1.1** - Offline voice recognition support
-- [ ] **v1.2** - Multiple language support
-- [ ] **v1.3** - Integration with EMR systems
-- [ ] **v2.0** - AI-powered medical insights
-- [ ] **v2.1** - Mobile app development
-
----
 
 **Built with ❤️ for healthcare professionals**
 
-_Last updated: November 2024_
+_Last updated: Augusst 2025_
